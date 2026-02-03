@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro e Inicio</title>
+</head>
+
+<body style="font-family: Arial; text-align:center; background:#f2f2f2;">
+
+  <h1>Registro e Inicio de Sesión</h1>
+
+  
+  <div id="menu" style="margin-top: 20px;">
+    <p>Elige una opción:</p>
+
+    <button onclick="mostrarRegistro()" style="padding:10px 20px; margin:10px; cursor:pointer;">
+      Registrarse
+    </button>
+
+    <button onclick="mostrarLogin()" style="padding:10px 20px; margin:10px; cursor:pointer;">
+      Iniciar sesión
+    </button>
+  </div>
+
+  
+  <div id="registro" style="display:none; background:white; width:340px; margin:20px auto; padding:20px; border-radius:10px;">
+    <h2>Registro</h2>
+
+    <label>Nombre:</label><br>
+    <input type="text" id="nombre" style="width:100%; padding:8px;"><br><br>
+
+    <label>Apellido:</label><br>
+    <input type="text" id="apellido" style="width:100%; padding:8px;"><br><br>
+
+    <label>Fecha de nacimiento:</label><br>
+    <input type="date" id="fecha" style="width:100%; padding:8px;"><br><br>
+
+    <label>Contraseña:</label><br>
+    <input type="password" id="password" style="width:100%; padding:8px;"><br><br>
+
+    <button onclick="registrar()" style="width:100%; padding:10px; cursor:pointer; background:#007bff; color:white; border:none; border-radius:8px;">
+      Registrar
+    </button>
+
+    <p id="mensajeRegistro"></p>
+
+    <button onclick="volverMenu()" style="width:100%; padding:10px; margin-top:10px; cursor:pointer; background:#555; color:white; border:none; border-radius:8px;">
+      Volver al menú
+    </button>
+  </div>
+
+  
+  <div id="login" style="display:none; background:white; width:340px; margin:20px auto; padding:20px; border-radius:10px;">
+    <h2>Iniciar sesión</h2>
+
+    <label>Nombre:</label><br>
+    <input type="text" id="nombreLogin" style="width:100%; padding:8px;"><br><br>
+
+    <label>Apellido:</label><br>
+    <input type="text" id="apellidoLogin" style="width:100%; padding:8px;"><br><br>
+
+    <label>Contraseña:</label><br>
+    <input type="password" id="passwordLogin" style="width:100%; padding:8px;"><br><br>
+
+    <button onclick="iniciarSesion()" style="width:100%; padding:10px; cursor:pointer; background:#28a745; color:white; border:none; border-radius:8px;">
+      Iniciar sesión
+    </button>
+
+    <p id="mensajeLogin"></p>
+
+    <button onclick="volverMenu()" style="width:100%; padding:10px; margin-top:10px; cursor:pointer; background:#555; color:white; border:none; border-radius:8px;">
+      Volver al menú
+    </button>
+  </div>
+
+  
+  <div id="bienvenida" style="display:none; background:white; width:340px; margin:20px auto; padding:20px; border-radius:10px;">
+    <h2 id="textoBienvenida"></h2>
+
+    
+    <button onclick="cerrarSesion()"
+      style="background:#007bff; color:white; border:none; padding:10px; width:100%; border-radius:8px; cursor:pointer; margin-top:10px;">
+      Cerrar sesión
+    </button>
+  </div>
+
+  <script>
+    function ocultarTodo(){
+      document.getElementById("menu").style.display = "none";
+      document.getElementById("registro").style.display = "none";
+      document.getElementById("login").style.display = "none";
+      document.getElementById("bienvenida").style.display = "none";
+    }
+
+    function volverMenu(){
+      ocultarTodo();
+      document.getElementById("menu").style.display = "block";
+    }
+
+    function mostrarRegistro(){
+      ocultarTodo();
+      document.getElementById("registro").style.display = "block";
+    }
+
+    function mostrarLogin(){
+      ocultarTodo();
+      document.getElementById("login").style.display = "block";
+    }
+
+    function registrar(){
+      let nombre = document.getElementById("nombre").value.trim();
+      let apellido = document.getElementById("apellido").value.trim();
+      let fecha = document.getElementById("fecha").value;
+      let password = document.getElementById("password").value.trim();
+
+      let mensaje = document.getElementById("mensajeRegistro");
+
+      if(nombre == "" || apellido == "" || fecha == "" || password == ""){
+        mensaje.innerHTML = "⚠️ Complete todos los campos";
+        mensaje.style.color = "red";
+      } else {
+        localStorage.setItem("nombre", nombre);
+        localStorage.setItem("apellido", apellido);
+        localStorage.setItem("fecha", fecha);
+        localStorage.setItem("password", password);
+
+        mensaje.innerHTML = "✅ Registro exitoso. Ahora puedes iniciar sesión.";
+        mensaje.style.color = "green";
+      }
+    }
+
+    function iniciarSesion(){
+      let nombreLogin = document.getElementById("nombreLogin").value.trim();
+      let apellidoLogin = document.getElementById("apellidoLogin").value.trim();
+      let passwordLogin = document.getElementById("passwordLogin").value.trim();
+
+      let mensajeLogin = document.getElementById("mensajeLogin");
+
+      let nombreGuardado = localStorage.getItem("nombre");
+      let apellidoGuardado = localStorage.getItem("apellido");
+      let passwordGuardada = localStorage.getItem("password");
+
+      if(nombreGuardado == null || apellidoGuardado == null || passwordGuardada == null){
+        mensajeLogin.innerHTML = "⚠️ No hay usuarios registrados";
+        mensajeLogin.style.color = "orange";
+        return;
+      }
+
+      if(nombreLogin == "" || apellidoLogin == "" || passwordLogin == ""){
+        mensajeLogin.innerHTML = "⚠️ Complete todos los campos";
+        mensajeLogin.style.color = "red";
+        return;
+      }
+
+      if(nombreLogin == nombreGuardado && apellidoLogin == apellidoGuardado && passwordLogin == passwordGuardada){
+        mensajeLogin.innerHTML = "";
+        ocultarTodo();
+        document.getElementById("bienvenida").style.display = "block";
+        document.getElementById("textoBienvenida").innerHTML =
+          "🎉 Bienvenido (usuari@): " + nombreLogin + " " + apellidoLogin;
+      } else {
+        mensajeLogin.innerHTML = "❌ Datos incorrectos";
+        mensajeLogin.style.color = "red";
+      }
+    }
+
+    
+    function cerrarSesion(){
+      alert("Sesión cerrada");
+
+      
+      localStorage.removeItem("nombre");
+      localStorage.removeItem("apellido");
+      localStorage.removeItem("fecha");
+      localStorage.removeItem("password");
+
+      
+      document.getElementById("nombre").value = "";
+      document.getElementById("apellido").value = "";
+      document.getElementById("fecha").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("mensajeRegistro").innerHTML = "";
+
+      
+      document.getElementById("nombreLogin").value = "";
+      document.getElementById("apellidoLogin").value = "";
+      document.getElementById("passwordLogin").value = "";
+      document.getElementById("mensajeLogin").innerHTML = "";
+
+     
+      volverMenu();
+    }
+  </script>
+
+</body>
+</html>
