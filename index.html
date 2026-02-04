@@ -106,7 +106,6 @@
       document.getElementById("menu").style.display = "block";
     }
 
-    // MOSTRAR REGISTRO (LIMPIA CAMPOS)
     function mostrarRegistro(){
       ocultarTodo();
       document.getElementById("registro").style.display = "block";
@@ -118,7 +117,6 @@
       document.getElementById("mensajeRegistro").innerHTML = "";
     }
 
-    // MOSTRAR LOGIN (LIMPIA CAMPOS)
     function mostrarLogin(){
       ocultarTodo();
       document.getElementById("login").style.display = "block";
@@ -143,7 +141,6 @@
         return;
       }
 
-      // Validación Nombre y Apellido
       let reglaNombreApellido = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+$/;
 
       if(!reglaNombreApellido.test(nombre)){
@@ -158,7 +155,6 @@
         return;
       }
 
-      // Validación Contraseña
       let tieneMayuscula = /[A-Z]/.test(password);
       let tieneNumero = /[0-9]/.test(password);
       let letras = password.match(/[a-zA-Z]/g);
@@ -170,7 +166,6 @@
         return;
       }
 
-      // Guardar usuario en localStorage
       localStorage.setItem("nombre", nombre);
       localStorage.setItem("apellido", apellido);
       localStorage.setItem("fecha", fecha);
@@ -219,14 +214,11 @@
       }
     }
 
-    // CERRAR SESIÓN (NO BORRA USUARIO)
     function cerrarSesion(){
       alert("Sesión cerrada");
 
-      // borrar solo sesión
       sessionStorage.removeItem("sesionActiva");
 
-      // limpiar login
       document.getElementById("nombreLogin").value = "";
       document.getElementById("apellidoLogin").value = "";
       document.getElementById("passwordLogin").value = "";
@@ -235,7 +227,6 @@
       volverMenu();
     }
 
-    // ELIMINAR USUARIO (BORRA TODO)
     function borrarUsuario(){
       localStorage.removeItem("nombre");
       localStorage.removeItem("apellido");
@@ -246,7 +237,6 @@
 
       alert("Usuario eliminado");
 
-      // limpiar registro
       document.getElementById("nombre").value = "";
       document.getElementById("apellido").value = "";
       document.getElementById("fecha").value = "";
@@ -259,4 +249,3 @@
 
 </body>
 </html>
-
